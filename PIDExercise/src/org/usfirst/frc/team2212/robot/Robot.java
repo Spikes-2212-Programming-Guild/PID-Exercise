@@ -29,7 +29,7 @@ import org.usfirst.frc.team2212.robot.subsystems.Drivetrain;
 public class Robot extends TimedRobot {
 	public final int DISTANCE = 100;
 	public final int TOLERANCE = 5;
-	public final int TIMEOUT = 10;
+	public final int TIMEOUT = 2;
 	
 	public static Drivetrain drivetrain;
 	public static OI m_oi;
