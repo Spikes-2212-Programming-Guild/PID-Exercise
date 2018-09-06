@@ -24,13 +24,16 @@ public class Drivetrain extends Subsystem {
     	this.rightEncoder = rightEncoder;
     }
     
-    public void drive(double leftSpeed, double rightSpeed) {
-    	left.set(leftSpeed);
-    	right.set(rightSpeed);
+    public void setLeft(double speed) {
+    	left.set(speed);
+    }
+    
+    public void setRight(double speed) {
+    	right.set(speed);
     }
 
     public void initDefaultCommand() {
-    	setDefaultCommand(new DriveDistanceWithPID(0, 0));
+    	setDefaultCommand(new DriveDistanceWithPID(0, 0, 0));
     }
 
 	public Encoder getLeftEncoder() {

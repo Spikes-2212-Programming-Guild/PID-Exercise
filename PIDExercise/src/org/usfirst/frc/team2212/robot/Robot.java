@@ -7,7 +7,10 @@
 
 package org.usfirst.frc.team2212.robot;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -37,7 +40,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new DriveDistanceWithPID(0, 0));
+		drivetrain = new Drivetrain(new VictorSP(RobotMap.PWM.LEFT_SPEED_CONTROLLER), new VictorSP(RobotMap.PWM.RIGHT_SPEED_CONTROLLER), new Encoder(RobotMap.DIO.LEFT_ENCODER_A, RobotMap.DIO.LEFT_ENCODER_B), new Encoder(RobotMap.DIO.RIGHT_ENCODER_A, RobotMap.DIO.RIGHT_ENCODER_B));
+		m_chooser.addDefault("Default Auto", new DriveDistanceWithPID(0, 0, 0));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}

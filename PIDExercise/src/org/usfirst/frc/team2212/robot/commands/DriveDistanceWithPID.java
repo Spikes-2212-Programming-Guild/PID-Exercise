@@ -17,21 +17,23 @@ public class DriveDistanceWithPID extends Command {
 	private PIDController pidControllerRight;
 	private double timeWhenFirstOnTarget;
 	private boolean firstTimeOnTarget = true;
+	private double timeout;
 	
-    public DriveDistanceWithPID(double distance, double tolerance) {
+    public DriveDistanceWithPID(double distance, double tolerance, double timeout) {
         requires(Robot.drivetrain);
         this.tolerance = tolerance;
         this.distance = distance;
+        this.timeout = timeout;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	pidControllerLeft = new PIDController(Drivetrain.KP, Drivetrain.KI, Drivetrain.KD, Robot.drivetrain.getLeftEncoder(), Robot.drivetrain.getLeft());
+    	pidControllerLeft = new PIDController(Drivetrain.KP, Drivetrain.KI, Drivetrain.KD, Robot.drivetrain.getLeftEncoder(), Robot.drivetrain::setLeft);
     	pidControllerLeft.setSetpoint(distance);
     	pidControllerLeft.setAbsoluteTolerance(tolerance);
     	pidControllerLeft.setOutputRange(-1, 1);
     	
-    	pidControllerRight = new PIDController(Drivetrain.KP, Drivetrain.KI, Drivetrain.KD, Robot.drivetrain.getRightEncoder(), Robot.drivetrain.getRight());
+    	pidControllerRight = new PIDController(Drivetrain.KP, Drivetrain.KI, Drivetrain.KD, Robot.drivetrain.getRightEncoder(), Robot.drivetrain::setRight);
     	pidControllerRight.setSetpoint(distance);
     	pidControllerRight.setAbsoluteTolerance(tolerance);
     	pidControllerRight.setOutputRange(-1, 1);
@@ -47,25 +49,29 @@ public class DriveDistanceWithPID extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if(pidControllerLeft.onTarget() && pidControllerRight.onTarget())
+        if(pidControllerLeft.onTarget() && pidControllerRight.onTarget()) {
         	if(firstTimeOnTarget) {
         		timeWhenFirstOnTarget = Timer.getFPGATimestamp();
         		firstTimeOnTarget = false;
-        	} else if(Timer.getFPGATimestamp()-timeWhenFirstOnTarget == 1000) {
+        	} else if(Timer.getFPGATimestamp()-timeWhenFirstOnTarget == timeout) {
         		return true;
         	}
-        else
+        } else {
         	firstTimeOnTarget = true;
-        	
+        }
+        
     	return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	pidControllerLeft.disable();
+    	pidControllerRight.disable();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }
