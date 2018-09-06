@@ -27,6 +27,10 @@ import org.usfirst.frc.team2212.robot.subsystems.Drivetrain;
  * project.
  */
 public class Robot extends TimedRobot {
+	public final int DISTANCE = 100;
+	public final int TOLERANCE = 5;
+	public final int TIMEOUT = 10;
+	
 	public static Drivetrain drivetrain;
 	public static OI m_oi;
 
@@ -41,7 +45,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		m_oi = new OI();
 		drivetrain = new Drivetrain(new VictorSP(RobotMap.PWM.LEFT_SPEED_CONTROLLER), new VictorSP(RobotMap.PWM.RIGHT_SPEED_CONTROLLER), new Encoder(RobotMap.DIO.LEFT_ENCODER_A, RobotMap.DIO.LEFT_ENCODER_B), new Encoder(RobotMap.DIO.RIGHT_ENCODER_A, RobotMap.DIO.RIGHT_ENCODER_B));
-		m_chooser.addDefault("Default Auto", new DriveDistanceWithPID(0, 0, 0));
+		m_chooser.addDefault("Default Auto", new DriveDistanceWithPID(DISTANCE, TOLERANCE, TIMEOUT));
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
 	}

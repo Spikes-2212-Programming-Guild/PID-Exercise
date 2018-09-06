@@ -33,7 +33,6 @@ public class Drivetrain extends Subsystem {
     }
 
     public void initDefaultCommand() {
-    	setDefaultCommand(new DriveDistanceWithPID(0, 0, 0));
     }
 
 	public Encoder getLeftEncoder() {
@@ -42,14 +41,6 @@ public class Drivetrain extends Subsystem {
 
 	public Encoder getRightEncoder() {
 		return rightEncoder;
-	}
-	
-	public SpeedController getLeft() {
-		return left;
-	}
-
-	public SpeedController getRight() {
-		return right;
 	}
 }
 
